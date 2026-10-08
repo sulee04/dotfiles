@@ -68,6 +68,18 @@ Enter to open the result in the current window. Escape enters normal mode in
 the picker; press Escape again to close it. Split and tab-opening shortcuts
 are disabled because Zellij handles panes.
 
+## Syntax highlighting
+
+Tree-sitter highlighting is enabled for OCaml (`.ml` and `.mli`), Python, Rust,
+JavaScript/JSX, HTML, and CSS. Parsers install automatically when missing.
+The Tree-sitter CLI lives in `~/.local/bin/tree-sitter`; parser builds also need
+a C compiler, curl, and tar. Run `:TSUpdate` after plugin updates. If opening a
+file during the initial install, reopen it after installation completes.
+
+Lean's experimental Tree-sitter parser is not enabled. Lean-specific highlighting
+and semantic tokens will be configured with lean.nvim in the language-server step.
+This step does not change indentation, folds, or editing shortcuts.
+
 ## Shortcut hints
 
 Press Space and pause for 300 ms to see available shortcuts through which-key.

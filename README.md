@@ -92,3 +92,17 @@ Open a new shell, or run `source ~/.config/shell/gh-completion.bash` in Bash
 to enable it immediately. Completions are loaded from the installed `gh` and
 stay current after updates. Bash requires the `bash-completion` package,
 installed automatically through apt on Debian/Ubuntu when missing.
+
+Shared Neovim/Yazi aliases (Bash and Zsh):
+
+```sh
+nvim-server                 # Neovim listening at ~/.cache/nvim/editor.sock
+# In a second terminal or Zellij pane:
+yazi-nvim                   # Yazi opens files in that Neovim instance
+```
+
+Both accept normal command arguments, e.g. `nvim-server file.txt` or
+`yazi-nvim ~/projects`. The Neovim alias creates the socket directory first.
+Start one server on this socket before using `yazi-nvim`. Normal `nvim` and
+`yazi` commands still work. Open a new shell, or source
+`~/.config/shell/editor-aliases.sh`, to load the aliases immediately.

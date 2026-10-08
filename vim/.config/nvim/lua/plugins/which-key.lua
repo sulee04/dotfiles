@@ -33,6 +33,9 @@ return {
       },
       spec = {
         { "<leader>f", group = "Find" },
+        { "<leader>c", group = "Code" },
+        { "<leader>d", group = "Diagnostics" },
+        { "<leader>l", group = "Lean" },
       },
     },
   },

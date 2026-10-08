@@ -6,6 +6,7 @@ if [[ "${1:-}" != --help && "${1:-}" != -h && " $* " != *" --dry-run "* ]]; then
   for tool in python3 git perl make tar unzip rg; do
     command -v "$tool" >/dev/null || missing+=("$tool")
   done
+  [[ -r /usr/share/bash-completion/bash_completion || -r /etc/bash_completion ]] || missing+=(bash-completion)
   if ((${#missing[@]})); then
     if ! command -v apt-get >/dev/null; then
       echo "Install these prerequisites and rerun: ${missing[*]}" >&2
@@ -14,7 +15,7 @@ if [[ "${1:-}" != --help && "${1:-}" != -h && " $* " != *" --dry-run "* ]]; then
     elevate=()
     if ((EUID != 0)); then elevate=(sudo); fi
     "${elevate[@]}" apt-get update
-    "${elevate[@]}" apt-get install -y python3 git perl make tar unzip ripgrep ca-certificates
+    "${elevate[@]}" apt-get install -y python3 git perl make tar unzip ripgrep ca-certificates bash-completion
   fi
 fi
 exec python3 "$repo_dir/scripts/setup.py" "$@"

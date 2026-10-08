@@ -15,7 +15,7 @@ import tempfile
 import urllib.request
 
 REPO = Path(__file__).resolve().parents[1]
-PACKAGES = ('vim', 'zellij', 'codex', 'yazi', 'lazygit')
+PACKAGES = ('vim', 'zellij', 'codex', 'yazi', 'lazygit', 'shell')
 
 
 def run(*args, cwd=None):
@@ -174,6 +174,7 @@ class Setup:
             print(f'Repository: {REPO}\nTarget: {self.home}\nArchitecture: {arch}')
             print('Would install stable Neovim, Yazi + ya, Zellij, Lazygit, GitHub CLI (gh), GNU Stow (unless --configs-only).')
             print('Would back up config conflicts, Stow: ' + ', '.join(PACKAGES))
+            print('Would enable gh completion in Bash and existing Zsh startup files.')
             print('Would restore locked Neovim plugins' if not self.args.skip_plugins else 'Plugin restore skipped')
             return
         self.bin.mkdir(parents=True, exist_ok=True)
@@ -207,6 +208,16 @@ class Setup:
                         shutil.copy2(rc, backup)
                     with rc.open('a') as stream:
                         stream.write(line)
+                shell = 'bash' if rc.name == '.bashrc' else 'zsh'
+                marker = '# Dotfiles: gh completion'
+                content = rc.read_text() if rc.exists() else ''
+                if marker not in content:
+                    backup = self.backups / rc.relative_to(self.home)
+                    backup.parent.mkdir(parents=True, exist_ok=True)
+                    if rc.exists() and not backup.exists():
+                        shutil.copy2(rc, backup)
+                    with rc.open('a') as stream:
+                        stream.write(f'\n{marker}\n[ ! -r "$HOME/.config/shell/gh-completion.{shell}" ] || . "$HOME/.config/shell/gh-completion.{shell}"\n')
         if not self.args.skip_plugins:
             run('nvim', '--headless', '+Lazy! restore', '+qa')
         print('Setup complete. Open a new shell, or run: export PATH="$HOME/.local/bin:$PATH"')

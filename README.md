@@ -12,7 +12,7 @@ cd ~/dotfiles
 
 Open a new shell afterward. The script works from any directory; you can clone somewhere other than `~/dotfiles`.
 
-Requires Python 3.9+, Git, Perl, make, tar, unzip, ripgrep, and CA certificates. Missing prerequisites are installed automatically through apt/sudo on Debian and Ubuntu (sudo may request your password). Other Linux distributions need these prerequisites installed first. Git is needed to clone. Neovim's official binary also needs a compatible glibc; Ubuntu 24.04 is suitable.
+Requires Python 3.9+, Git, Perl, make, tar, unzip, ripgrep, bash-completion, and CA certificates. Missing prerequisites are installed automatically through apt/sudo on Debian and Ubuntu (sudo may request your password). Other Linux distributions need these prerequisites installed first. Git is needed to clone. Neovim's official binary also needs a compatible glibc; Ubuntu 24.04 is suitable.
 
 Missing tools are downloaded from official stable releases into `~/.local/opt/dotfiles` and linked from `~/.local/bin`. Stow is built from its official source release. Existing installed tools are retained by `install.sh`. GitHub asset SHA-256 digests are verified when provided; downloads use HTTPS. Internet access is needed for downloads and plugin restoration.
 
@@ -47,14 +47,15 @@ Plugins remain pinned to the lockfile. To deliberately upgrade plugins, run `:La
 | `zellij` | `.config/zellij/config.kdl` |
 | `codex` | `.codex/config.toml` |
 | `lazygit` | `.config/lazygit/config.yml` |
+| `shell` | `.config/shell/gh-completion.bash`, `.config/shell/gh-completion.zsh` |
 
 Yazi's package uses relative links to the integration files in the Neovim package, keeping one source that survives cloning.
 
 ```sh
 cd ~/dotfiles
-stow --target="$HOME" --simulate --restow vim yazi zellij codex lazygit
-stow --target="$HOME" --restow vim yazi zellij codex lazygit
-stow --target="$HOME" --delete vim yazi zellij codex lazygit
+stow --target="$HOME" --simulate --restow vim yazi zellij codex lazygit shell
+stow --target="$HOME" --restow vim yazi zellij codex lazygit shell
+stow --target="$HOME" --delete vim yazi zellij codex lazygit shell
 ```
 
 Deleting links retains repository files. To restore an original config, remove its Stow link and move the corresponding backup to its original path. `.stowrc` defaults to the repository's parent; scripts always pass the home target explicitly.
@@ -85,3 +86,9 @@ GitHub CLI (`gh`) is installed when missing and updated to the latest stable
 release by `update.sh`, on Linux x86-64 and ARM64. After setup, run
 `gh auth login` to connect your GitHub account. Authentication stays on each
 machine and is not included in dotfiles.
+
+`gh` Tab completion is enabled for Bash and for an existing Zsh startup file.
+Open a new shell, or run `source ~/.config/shell/gh-completion.bash` in Bash
+to enable it immediately. Completions are loaded from the installed `gh` and
+stay current after updates. Bash requires the `bash-completion` package,
+installed automatically through apt on Debian/Ubuntu when missing.

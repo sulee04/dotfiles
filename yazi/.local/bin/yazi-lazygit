@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+set -euo pipefail
+if ! repo_root="$(git rev-parse --show-toplevel 2>/dev/null)"; then
+  printf 'This directory is not inside a Git repository. Press Enter to return to Yazi.\n'
+  read -r _ || true
+  exit 0
+fi
+exec lazygit --path "$repo_root"

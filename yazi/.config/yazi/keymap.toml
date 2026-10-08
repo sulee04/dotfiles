@@ -1,0 +1,4 @@
+[[mgr.prepend_keymap]]
+on = "<C-g>"
+run = 'shell "\"$HOME/.local/bin/yazi-lazygit\"" --block'
+desc = "Open Lazygit here; quit to return to Yazi"

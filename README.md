@@ -1,6 +1,6 @@
 # Personal dotfiles
 
-Linux x86-64 and ARM64 setup for Neovim, Yazi (`yazi` and `ya`), Zellij, and GNU Stow. Stow manages your Neovim, Yazi, Zellij, and Codex settings.
+Linux x86-64 and ARM64 setup for Neovim, Yazi (`yazi` and `ya`), Zellij, Lazygit, and GNU Stow. Stow manages your Neovim, Yazi, Zellij, and Codex settings.
 
 ## Set up a machine
 
@@ -46,14 +46,15 @@ Plugins remain pinned to the lockfile. To deliberately upgrade plugins, run `:La
 | `yazi` | `.config/yazi/yazi.toml`, `.local/bin/nvim-yazi-editor` |
 | `zellij` | `.config/zellij/config.kdl` |
 | `codex` | `.codex/config.toml` |
+| `lazygit` | `.config/lazygit/config.yml` |
 
 Yazi's package uses relative links to the integration files in the Neovim package, keeping one source that survives cloning.
 
 ```sh
 cd ~/dotfiles
-stow --target="$HOME" --simulate --restow vim yazi zellij codex
-stow --target="$HOME" --restow vim yazi zellij codex
-stow --target="$HOME" --delete vim yazi zellij codex
+stow --target="$HOME" --simulate --restow vim yazi zellij codex lazygit
+stow --target="$HOME" --restow vim yazi zellij codex lazygit
+stow --target="$HOME" --delete vim yazi zellij codex lazygit
 ```
 
 Deleting links retains repository files. To restore an original config, remove its Stow link and move the corresponding backup to its original path. `.stowrc` defaults to the repository's parent; scripts always pass the home target explicitly.
@@ -75,3 +76,7 @@ bash -n install.sh update.sh
 ```
 
 Official sources: [Neovim installation](https://github.com/neovim/neovim/blob/master/INSTALL.md), [Yazi releases](https://github.com/sxyazi/yazi/releases), [Zellij releases](https://github.com/zellij-org/zellij/releases), [GNU Stow](https://www.gnu.org/software/stow/).
+
+Yazi includes Git status indicators and **Ctrl+G** to open Lazygit; **q** returns
+to Yazi. Both use Nord. The Git plugin is bundled at a fixed revision. See
+[yazi/README.md](yazi/README.md) for markers and controls.

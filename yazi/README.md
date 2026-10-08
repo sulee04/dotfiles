@@ -13,3 +13,22 @@ The `yazi.toml` and editor-helper links use the integration in the `vim` package
 
 References: https://yazi-rs.github.io/docs/configuration/theme/
 and https://yazi-rs.github.io/docs/faq/#i-dont-like-nerd-fonts
+
+## Git workflow
+
+Git status appears at the right edge of file rows and propagates to folders.
+Markers: `?` untracked, `M` modified, `S` staged, `A` added, `D` deleted,
+`U` unmerged/updated, `!` ignored. Colors use Nord; file icons stay monochrome.
+
+Press **Ctrl+G** inside a repository to open Lazygit for that repository.
+Press **q** in Lazygit to return to Yazi. Outside a repository, the launcher
+shows a message and returns after Enter without creating a repository.
+Lazygit uses square borders and a Nord palette. Git actions such as staging,
+committing, and pushing happen only when you choose them in Lazygit.
+
+The official `git.yazi` plugin is bundled at the commit in its `UPSTREAM` file,
+including its MIT license. Stow installs it with no extra plugin download.
+Plugin updates come through dotfile commits; the installer updates Lazygit to
+its stable release when you run `update.sh`.
+
+Source: https://github.com/yazi-rs/plugins/tree/main/git.yazi

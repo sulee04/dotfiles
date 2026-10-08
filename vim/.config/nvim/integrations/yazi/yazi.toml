@@ -12,3 +12,13 @@ bulk-rename = [
 [[open.prepend_rules]]
 url = "bulk-rename.txt"
 use = "bulk-rename"
+
+[[plugin.prepend_fetchers]]
+url = "*"
+run = "git"
+group = "git"
+
+[[plugin.prepend_fetchers]]
+url = "*/"
+run = "git"
+group = "git"

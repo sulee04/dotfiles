@@ -15,7 +15,7 @@ import tempfile
 import urllib.request
 
 REPO = Path(__file__).resolve().parents[1]
-PACKAGES = ('vim', 'zellij', 'codex', 'yazi')
+PACKAGES = ('vim', 'zellij', 'codex', 'yazi', 'lazygit')
 
 
 def run(*args, cwd=None):
@@ -62,6 +62,7 @@ class Setup:
         tag = data['tag_name']
         if not re.fullmatch(r'[\w.\-]+', tag):
             raise RuntimeError(f'Unexpected release tag: {tag}')
+        asset = asset.format(version=tag.removeprefix('v'))
         entry = next((a for a in data['assets'] if a['name'] == asset), None)
         if not entry:
             raise RuntimeError(f'{repository} {tag} has no asset {asset}')
@@ -171,7 +172,7 @@ class Setup:
             raise RuntimeError(f'Unsupported architecture: {platform.machine()}')
         if self.args.dry_run:
             print(f'Repository: {REPO}\nTarget: {self.home}\nArchitecture: {arch}')
-            print('Would install stable Neovim, Yazi + ya, Zellij, GNU Stow (unless --configs-only).')
+            print('Would install stable Neovim, Yazi + ya, Zellij, Lazygit, GNU Stow (unless --configs-only).')
             print('Would back up config conflicts, Stow: ' + ', '.join(PACKAGES))
             print('Would restore locked Neovim plugins' if not self.args.skip_plugins else 'Plugin restore skipped')
             return
@@ -186,6 +187,9 @@ class Setup:
                 self.release('yazi', 'sxyazi/yazi', f'yazi-{arch}-unknown-linux-musl.zip', {'yazi': 'yazi', 'ya': 'ya'})
             if self.args.update or not shutil.which('zellij'):
                 self.release('zellij', 'zellij-org/zellij', f'zellij-{arch}-unknown-linux-musl.tar.gz', {'zellij': 'zellij'})
+            if self.args.update or not shutil.which('lazygit'):
+                lgarch = 'arm64' if arch == 'aarch64' else arch
+                self.release('lazygit', 'jesseduffield/lazygit', f'lazygit_{{version}}_linux_{lgarch}.tar.gz', {'lazygit': 'lazygit'})
             if self.args.update or not shutil.which('stow'):
                 self.stow()
         self.configs()

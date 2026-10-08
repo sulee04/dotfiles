@@ -776,3 +776,24 @@ conds = [
 ]
 
 # : }}}
+
+# Git status markers use Nord; file icons remain monochrome.
+[git]
+unknown = { fg = "#4C566A" }
+ignored = { fg = "#4C566A" }
+untracked = { fg = "#B48EAD" }
+unstaged = { fg = "#EBCB8B" }
+staged = { fg = "#A3BE8C" }
+added = { fg = "#A3BE8C" }
+deleted = { fg = "#BF616A" }
+updated = { fg = "#D08770" }
+clean = { fg = "#D8DEE9" }
+unknown_sign = ""
+ignored_sign = "! "
+untracked_sign = "? "
+unstaged_sign = "M "
+staged_sign = "S "
+added_sign = "A "
+deleted_sign = "D "
+updated_sign = "U "
+clean_sign = ""

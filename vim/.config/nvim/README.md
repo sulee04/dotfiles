@@ -135,6 +135,26 @@ Press f to expand the Find group, then f/g/b/h to launch the corresponding
 Telescope search. Escape dismisses the hints. Mapping icons are disabled and
 common key labels use plain text. Existing shortcuts are unchanged.
 
+## Git changes
+
+Gitsigns shows `+` for added lines, `~` for changed lines, and `_` or `-` for
+deletions in the sign column. It also attaches to untracked files. Staged
+changes have separate highlight colors, using Nord's Git highlight groups.
+
+| Shortcut | Action |
+| --- | --- |
+| `]c` / `[c` | Next / previous changed section (hunk) |
+| `Space g p` | Preview the hunk in a floating popup |
+| `Space g s` | Stage the hunk; repeat on a staged hunk to unstage |
+| `Space g r` | Reset the hunk after confirmation |
+| `Space g b` | Show detailed blame for the current line in a popup |
+
+Shortcuts appear under Git in which-key when gitsigns attaches. Hunk actions
+use the cursor's location. Staging can include unsaved buffer edits; it changes
+Git's index, not the saved file. Reset changes the buffer, so use `:w` to save
+the result or `u` to undo it. Blame is shown only on demand. No Git sidebar or
+diff split is configured. Lazygit is managed separately by you.
+
 ## File browsing
 
 Run `yazi` from a terminal or `:terminal yazi` inside Neovim. Its editor opener

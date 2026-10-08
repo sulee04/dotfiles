@@ -149,7 +149,8 @@ changes have separate highlight colors, using Nord's Git highlight groups.
 | `Space g r` | Reset the hunk after confirmation |
 | `Space g b` | Show detailed blame for the current line in a popup |
 
-Shortcuts appear under Git in which-key when gitsigns attaches. Hunk actions
+Space g shortcuts always appear under Git in which-key. Hunk actions require
+an attached Git file; hunk-navigation shortcuts appear when it attaches. Actions
 use the cursor's location. Staging can include unsaved buffer edits; it changes
 Git's index, not the saved file. Reset changes the buffer, so use `:w` to save
 the result or `u` to undo it. Blame is shown only on demand. No Git sidebar or

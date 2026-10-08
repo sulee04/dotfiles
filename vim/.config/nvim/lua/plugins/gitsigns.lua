@@ -2,6 +2,16 @@ return {
   {
     "lewis6991/gitsigns.nvim",
     event = { "BufReadPre", "BufNewFile" },
+    keys = {
+      { "<leader>gp", function() require("gitsigns").preview_hunk() end, desc = "Preview hunk" },
+      { "<leader>gs", function() require("gitsigns").stage_hunk() end, desc = "Stage/unstage hunk" },
+      { "<leader>gr", function()
+        vim.ui.select({ "Cancel", "Reset hunk" }, { prompt = "Discard this hunk's buffer edits?" }, function(choice)
+          if choice == "Reset hunk" then require("gitsigns").reset_hunk() end
+        end)
+      end, desc = "Reset hunk (confirm)" },
+      { "<leader>gb", function() require("gitsigns").blame_line({ full = true }) end, desc = "Blame current line" },
+    },
     opts = {
       signs = {
         add = { text = "+" },
@@ -29,14 +39,6 @@ return {
         end
         map("]c", function() gs.nav_hunk("next") end, "Next Git hunk")
         map("[c", function() gs.nav_hunk("prev") end, "Previous Git hunk")
-        map("<leader>gp", gs.preview_hunk, "Preview hunk")
-        map("<leader>gs", gs.stage_hunk, "Stage/unstage hunk")
-        map("<leader>gr", function()
-          vim.ui.select({ "Cancel", "Reset hunk" }, { prompt = "Discard this hunk's buffer edits?" }, function(choice)
-            if choice == "Reset hunk" then gs.reset_hunk() end
-          end)
-        end, "Reset hunk (confirm)")
-        map("<leader>gb", function() gs.blame_line({ full = true }) end, "Blame current line")
       end,
     },
   },

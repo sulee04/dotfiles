@@ -62,7 +62,7 @@ class ConfigTests(unittest.TestCase):
     def test_existing_folded_directory_preserves_source_links(self):
         target = self.home / '.config/yazi'
         target.parent.mkdir()
-        target.symlink_to(self.repo / 'yazi/.config/yazi')
+        target.symlink_to(os.path.relpath(self.repo / 'yazi/.config/yazi', target.parent))
         self.instance.configs()
         self.assertTrue((self.repo / 'yazi/.config/yazi/yazi.toml').is_symlink())
         self.assertTrue((target / 'yazi.toml').is_file())

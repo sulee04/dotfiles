@@ -126,7 +126,7 @@ Shortcuts are added when a server attaches to the buffer. which-key groups them
 under Code, Diagnostics, and Lean. Errors are underlined and marked E/W/I/H in
 the sign column; diagnostic text appears when requested rather than beside
 every line. Lean's infoview does not open automatically; `:LeanInfoviewToggle`
-can open it explicitly in a separate tab. Lean server stderr panes are disabled;
+opens it explicitly in a vertical split beside the editor. Lean server stderr panes are disabled;
 use `:LspLog` to investigate server problems. `:checkhealth vim.lsp` lists the
 enabled servers, and `:LspInfo` reports clients for the current session.
 

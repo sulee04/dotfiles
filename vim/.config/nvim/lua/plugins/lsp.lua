@@ -13,7 +13,7 @@ return {
       -- Set before lean.nvim's plugin files initialize its language server.
       vim.g.lean_config = {
         mappings = false,
-        infoview = { autoopen = false, separate_tab = true },
+        infoview = { autoopen = false, separate_tab = false, orientation = "vertical" },
         stderr = { enable = false },
         graphics = { enabled = false },
       }

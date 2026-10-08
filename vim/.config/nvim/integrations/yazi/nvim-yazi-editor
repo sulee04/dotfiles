@@ -1,0 +1,68 @@
+#!/usr/bin/env python3
+"""Open Yazi files locally, or in the parent Neovim supplied by $NVIM."""
+
+import json
+import os
+from pathlib import Path
+import shutil
+import subprocess
+import sys
+import time
+
+
+def main():
+    args = sys.argv[1:]
+    wait = bool(args and args[0] == "--wait")
+    if wait:
+        args.pop(0)
+    if not args:
+        return 0
+    nvim = shutil.which("nvim")
+    if not nvim:
+        raise RuntimeError("nvim is not available on PATH")
+    files = [str(Path(arg).absolute()) for arg in args]
+    server = os.environ.get("NVIM")
+    if not server:
+        os.execv(nvim, [nvim, "-p", "--", *files])
+
+    def evaluate(lua):
+        # Vim single-quoted strings escape apostrophes by doubling them.
+        expression = "luaeval('" + lua.replace("'", "''") + "')"
+        result = subprocess.run(
+            [nvim, "--headless", "--server", server, "--remote-expr", expression],
+            text=True, capture_output=True, check=True,
+        )
+        try:
+            return json.loads(result.stdout.strip())
+        except ValueError as error:
+            raise RuntimeError(
+                f"Invalid editor response: stdout={result.stdout!r}, stderr={result.stderr!r}"
+            ) from error
+
+    payload = json.dumps(json.dumps(files, ensure_ascii=False), ensure_ascii=False)
+    buffers = evaluate(
+        "(function() local files = vim.json.decode(" + payload + "); "
+        "local bufs = {}; vim.cmd.stopinsert(); for _, file in ipairs(files) do "
+        "local b = vim.fn.bufadd(file); vim.fn.bufload(b); vim.bo[b].buflisted = true; "
+        "vim.cmd.tabnew(); vim.api.nvim_set_current_buf(b); "
+        "table.insert(bufs, b) end; "
+        "return vim.json.encode(bufs) end)()"
+    )
+    if wait:
+        # Bulk rename must wait until its temporary edit buffer is unloaded.
+        while evaluate(
+            "(function() for _, b in ipairs(" + "{" +
+            ",".join(str(b) for b in buffers) + "}" +
+            ") do if vim.fn.bufloaded(b) == 1 then return 'true' end end; "
+            "return 'false' end)()"
+        ):
+            time.sleep(0.2)
+    return 0
+
+
+if __name__ == "__main__":
+    try:
+        sys.exit(main())
+    except (RuntimeError, OSError, subprocess.CalledProcessError, ValueError) as error:
+        print(f"nvim-yazi-editor: {error}", file=sys.stderr)
+        sys.exit(1)

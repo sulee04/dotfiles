@@ -1,0 +1,9 @@
+# Keep machine credentials, logs, and editor state out of dotfiles.
+**/auth.json
+**/*.sqlite*
+**/history.jsonl
+**/sessions/
+**/*.swp
+**/*.swo
+**/*~
+__pycache__/

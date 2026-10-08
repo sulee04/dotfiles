@@ -1,0 +1,14 @@
+[mgr]
+show_hidden = true
+
+[opener]
+edit = [
+  { run = '"$HOME/.local/bin/nvim-yazi-editor" %s', block = true, for = "unix", desc = "Edit in Neovim" },
+]
+bulk-rename = [
+  { run = '"$HOME/.local/bin/nvim-yazi-editor" --wait %s', block = true, for = "unix", desc = "Edit rename list; save and :bd to finish" },
+]
+
+[[open.prepend_rules]]
+url = "bulk-rename.txt"
+use = "bulk-rename"

@@ -1,0 +1,23 @@
+model = "gpt-6.1-sol"
+model_reasoning_effort = "low"
+[projects."/home/student/cs424/cs424-2026-fall-hw1-sulee04"]
+trust_level = "trusted"
+
+[projects."/home/student/useless-yet-beautiful"]
+trust_level = "trusted"
+
+[projects."/home/student/cs520/cs520-2026-fall-hw1-slang-sulee04"]
+trust_level = "trusted"
+
+[projects."/home/student"]
+trust_level = "trusted"
+
+[tui]
+theme = "nord"
+screen_reader_detection_done = true
+status_line = ["model-with-reasoning", "current-dir", "git-branch", "context-used", "five-hour-limit"]
+status_line_use_colors = true
+
+[tui.model_availability_nux]
+gpt-6-astra = 4
+"gpt-6.1-sol" = 3

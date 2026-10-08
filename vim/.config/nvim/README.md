@@ -44,6 +44,8 @@ No provider was available in the setup environment.
 
 Nord is loaded at startup using `gbprod/nord.nvim`, with true colors enabled.
 The main background is transparent so it uses the terminal's Nord background.
+Floating popups, including type information, use an opaque Nord1 background,
+bright text, and a Frost-colored border for contrast. Type hovers have rounded borders.
 To use the theme's own background, set `transparent = false` in
 `lua/plugins/colorscheme.lua` and restart Neovim.
 

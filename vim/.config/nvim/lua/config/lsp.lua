@@ -21,7 +21,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
       vim.keymap.set("n", lhs, rhs, { buffer = event.buf, desc = desc })
     end
     map("gd", function() require("telescope.builtin").lsp_definitions() end, "Go to definition")
-    map("K", vim.lsp.buf.hover, "Hover documentation")
+    map("K", function() vim.lsp.buf.hover({ border = "rounded" }) end, "Hover documentation")
     map("<leader>cr", vim.lsp.buf.rename, "Rename symbol")
     map("<leader>ca", vim.lsp.buf.code_action, "Code action")
     map("<leader>cR", function() require("telescope.builtin").lsp_references() end, "Find references")

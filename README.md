@@ -77,6 +77,6 @@ bash -n install.sh update.sh
 
 Official sources: [Neovim installation](https://github.com/neovim/neovim/blob/master/INSTALL.md), [Yazi releases](https://github.com/sxyazi/yazi/releases), [Zellij releases](https://github.com/zellij-org/zellij/releases), [GNU Stow](https://www.gnu.org/software/stow/).
 
-Yazi includes Git status indicators and **Ctrl+G** to open Lazygit; **q** returns
+Yazi includes Git status indicators and **g, then i** to open Lazygit; **q** returns
 to Yazi. Both use Nord. The Git plugin is bundled at a fixed revision. See
 [yazi/README.md](yazi/README.md) for markers and controls.

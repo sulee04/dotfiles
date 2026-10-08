@@ -59,6 +59,14 @@ class ConfigTests(unittest.TestCase):
         self.assertFalse(os.path.isabs(os.readlink(config)))
         self.assertTrue((self.instance.backups / '.config/yazi/yazi.toml').is_symlink())
 
+    def test_existing_folded_directory_preserves_source_links(self):
+        target = self.home / '.config/yazi'
+        target.parent.mkdir()
+        target.symlink_to(self.repo / 'yazi/.config/yazi')
+        self.instance.configs()
+        self.assertTrue((self.repo / 'yazi/.config/yazi/yazi.toml').is_symlink())
+        self.assertTrue((target / 'yazi.toml').is_file())
+
     def test_failure_restores_original_config(self):
         config = self.home / '.codex/config.toml'
         config.parent.mkdir()

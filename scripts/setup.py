@@ -146,7 +146,7 @@ class Setup:
                             raise RuntimeError(f'Config parent {parent} links outside this repository; relocate it before setup')
                     if target.exists() or target.is_symlink():
                         if target.resolve() == source.resolve():
-                            if not target.is_symlink() or os.readlink(target) == os.path.relpath(source, target.parent):
+                            if target.parent.resolve() == source.parent.resolve() or not target.is_symlink() or os.readlink(target) == os.path.relpath(source, target.parent):
                                 continue
                         self.backup(target)
                     created.append(target)

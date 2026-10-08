@@ -172,7 +172,7 @@ class Setup:
             raise RuntimeError(f'Unsupported architecture: {platform.machine()}')
         if self.args.dry_run:
             print(f'Repository: {REPO}\nTarget: {self.home}\nArchitecture: {arch}')
-            print('Would install stable Neovim, Yazi + ya, Zellij, Lazygit, GNU Stow (unless --configs-only).')
+            print('Would install stable Neovim, Yazi + ya, Zellij, Lazygit, GitHub CLI (gh), GNU Stow (unless --configs-only).')
             print('Would back up config conflicts, Stow: ' + ', '.join(PACKAGES))
             print('Would restore locked Neovim plugins' if not self.args.skip_plugins else 'Plugin restore skipped')
             return
@@ -190,6 +190,9 @@ class Setup:
             if self.args.update or not shutil.which('lazygit'):
                 lgarch = 'arm64' if arch == 'aarch64' else arch
                 self.release('lazygit', 'jesseduffield/lazygit', f'lazygit_{{version}}_linux_{lgarch}.tar.gz', {'lazygit': 'lazygit'})
+            if self.args.update or not shutil.which('gh'):
+                gharch = 'amd64' if arch == 'x86_64' else 'arm64'
+                self.release('gh', 'cli/cli', f'gh_{{version}}_linux_{gharch}.tar.gz', {'gh': 'bin/gh'})
             if self.args.update or not shutil.which('stow'):
                 self.stow()
         self.configs()

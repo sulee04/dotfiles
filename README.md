@@ -1,6 +1,6 @@
 # Personal dotfiles
 
-Linux x86-64 and ARM64 setup for Neovim, Yazi (`yazi` and `ya`), Zellij, Lazygit, and GNU Stow. Stow manages your Neovim, Yazi, Zellij, and Codex settings.
+Linux x86-64 and ARM64 setup for Neovim, Yazi (`yazi` and `ya`), Zellij, Lazygit, GitHub CLI (`gh`), and GNU Stow. Stow manages your Neovim, Yazi, Zellij, and Codex settings.
 
 ## Set up a machine
 
@@ -80,3 +80,8 @@ Official sources: [Neovim installation](https://github.com/neovim/neovim/blob/ma
 Yazi includes Git status indicators and **g, then i** to open Lazygit; **q** returns
 to Yazi. Both use Nord. The Git plugin is bundled at a fixed revision. See
 [yazi/README.md](yazi/README.md) for markers and controls.
+
+GitHub CLI (`gh`) is installed when missing and updated to the latest stable
+release by `update.sh`, on Linux x86-64 and ARM64. After setup, run
+`gh auth login` to connect your GitHub account. Authentication stays on each
+machine and is not included in dotfiles.

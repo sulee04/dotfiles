@@ -115,6 +115,7 @@ formatting or completion popup is enabled in this step.
 | `K` | Hover documentation |
 | `Space c r` | Rename symbol |
 | `Space c a` | Code action |
+| `Space c f` | Format the current buffer through its LSP (manual only) |
 | `Space c R` | Find references in Telescope |
 | `Space d d` | Show diagnostics for the current line |
 | `Space d l` | List current-buffer diagnostics in Telescope |

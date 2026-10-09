@@ -100,6 +100,15 @@ class Setup:
         for executable, relative in binaries.items():
             self.link(self.bin / executable, dest / relative)
 
+    def claude(self):
+        if not (shutil.which('curl') or shutil.which('wget')):
+            raise RuntimeError('Claude Code installation requires curl or wget')
+        with tempfile.TemporaryDirectory(prefix='dotfiles-claude-') as temp:
+            installer = Path(temp) / 'install.sh'
+            fetch('https://claude.ai/install.sh', installer)
+            run('bash', installer, 'stable')
+        run(self.bin / 'claude', '--version')
+
     def stow(self):
         # GNU publishes its current stable source as stow-latest.tar.gz.
         with tempfile.TemporaryDirectory(prefix='dotfiles-stow-') as temp:
@@ -172,7 +181,7 @@ class Setup:
             raise RuntimeError(f'Unsupported architecture: {platform.machine()}')
         if self.args.dry_run:
             print(f'Repository: {REPO}\nTarget: {self.home}\nArchitecture: {arch}')
-            print('Would install stable Neovim, Yazi + ya, Zellij, Lazygit, GitHub CLI (gh), GNU Stow (unless --configs-only).')
+            print('Would install stable Neovim, Yazi + ya, Zellij, Lazygit, GitHub CLI (gh), Codex, Claude Code, GNU Stow (unless --configs-only).')
             print('Would back up config conflicts, Stow: ' + ', '.join(PACKAGES))
             print('Would enable gh completion in Bash and existing Zsh startup files.')
             print('Would enable nvim-server and yazi-nvim shell aliases.')
@@ -195,6 +204,11 @@ class Setup:
             if self.args.update or not shutil.which('gh'):
                 gharch = 'amd64' if arch == 'x86_64' else 'arm64'
                 self.release('gh', 'cli/cli', f'gh_{{version}}_linux_{gharch}.tar.gz', {'gh': 'bin/gh'})
+            if self.args.update or not shutil.which('codex'):
+                target = f'codex-{arch}-unknown-linux-musl'
+                self.release('codex', 'openai/codex', f'{target}.tar.gz', {'codex': target})
+            if self.args.update or not shutil.which('claude'):
+                self.claude()
             if self.args.update or not shutil.which('stow'):
                 self.stow()
         self.configs()

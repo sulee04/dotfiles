@@ -84,3 +84,69 @@ class ConfigTests(unittest.TestCase):
             self.instance.configs()
         self.assertEqual(list(other.iterdir()), [])
         self.assertTrue((self.home / '.config').is_symlink())
+
+
+class AgentInstallTests(unittest.TestCase):
+    def test_install_modes(self):
+        cases = (
+            ('existing', False, False, False, False, False),
+            ('missing', True, False, False, False, True),
+            ('update', False, True, False, False, True),
+            ('configs_only', True, True, True, False, False),
+            ('dry_run', True, True, False, True, False),
+        )
+        for arch in ('x86_64', 'aarch64'):
+            for name, missing, update, configs_only, dry_run, install in cases:
+                with self.subTest(arch=arch, mode=name), tempfile.TemporaryDirectory() as temp:
+                    args = SimpleNamespace(update=update, configs_only=configs_only,
+                                           dry_run=dry_run, skip_plugins=True)
+                    def which(command):
+                        return None if missing and command in ('codex', 'claude') else f'/usr/bin/{command}'
+                    with patch.object(Path, 'home', return_value=Path(temp)), \
+                            patch.object(setup.platform, 'system', return_value='Linux'), \
+                            patch.object(setup.platform, 'machine', return_value=arch), \
+                            patch.object(setup.shutil, 'which', side_effect=which), \
+                            patch.dict(os.environ), \
+                            patch.object(setup.Setup, 'release') as release, \
+                            patch.object(setup.Setup, 'claude') as claude, \
+                            patch.object(setup.Setup, 'stow'), \
+                            patch.object(setup.Setup, 'configs'), \
+                            patch.object(setup, 'fetch') as fetch:
+                        setup.Setup(args).main()
+                        codex_calls = [call for call in release.call_args_list if call.args[0] == 'codex']
+                        self.assertEqual(len(codex_calls), int(install))
+                        self.assertEqual(claude.call_count, int(install))
+                        if install:
+                            target = f'codex-{arch}-unknown-linux-musl'
+                            self.assertEqual(codex_calls[0].args,
+                                             ('codex', 'openai/codex', f'{target}.tar.gz', {'codex': target}))
+                        fetch.assert_not_called()
+                        if dry_run:
+                            self.assertEqual(list(Path(temp).iterdir()), [])
+
+    def test_claude_installer_and_verification(self):
+        with tempfile.TemporaryDirectory() as temp, \
+                patch.object(Path, 'home', return_value=Path(temp)), \
+                patch.object(setup.shutil, 'which', return_value='/usr/bin/curl'), \
+                patch.object(setup, 'fetch') as fetch, patch.object(setup, 'run') as run:
+            instance = setup.Setup(SimpleNamespace())
+            instance.claude()
+            installer = fetch.call_args.args[1]
+            self.assertEqual(fetch.call_args.args[0], 'https://claude.ai/install.sh')
+            self.assertEqual(run.call_args_list[0].args, ('bash', installer, 'stable'))
+            self.assertEqual(run.call_args_list[1].args, (instance.bin / 'claude', '--version'))
+            self.assertFalse(installer.exists())
+
+    def test_claude_requires_downloader(self):
+        with patch.object(setup.shutil, 'which', return_value=None), \
+                patch.object(setup, 'fetch') as fetch:
+            with self.assertRaisesRegex(RuntimeError, 'curl or wget'):
+                setup.Setup(SimpleNamespace()).claude()
+            fetch.assert_not_called()
+
+    def test_claude_install_failure_propagates(self):
+        with patch.object(setup.shutil, 'which', return_value='/usr/bin/curl'), \
+                patch.object(setup, 'fetch'), \
+                patch.object(setup, 'run', side_effect=subprocess.CalledProcessError(1, 'bash')):
+            with self.assertRaises(subprocess.CalledProcessError):
+                setup.Setup(SimpleNamespace()).claude()

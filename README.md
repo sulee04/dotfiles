@@ -1,6 +1,6 @@
 # Personal dotfiles
 
-Linux x86-64 and ARM64 setup for Neovim, Yazi (`yazi` and `ya`), Zellij, Lazygit, GitHub CLI (`gh`), and GNU Stow. Stow manages your Neovim, Yazi, Zellij, and Codex settings.
+Linux x86-64 and ARM64 setup for Neovim, Yazi (`yazi` and `ya`), Zellij, Lazygit, GitHub CLI (`gh`), Codex (`codex`), Claude Code (`claude`), and GNU Stow. Stow manages your Neovim, Yazi, Zellij, and Codex settings.
 
 ## Set up a machine
 
@@ -12,13 +12,13 @@ cd ~/dotfiles
 
 Open a new shell afterward. The script works from any directory; you can clone somewhere other than `~/dotfiles`.
 
-Requires Python 3.9+, Git, Perl, make, tar, unzip, ripgrep, bash-completion, and CA certificates. Missing prerequisites are installed automatically through apt/sudo on Debian and Ubuntu (sudo may request your password). Other Linux distributions need these prerequisites installed first. Git is needed to clone. Neovim's official binary also needs a compatible glibc; Ubuntu 24.04 is suitable.
+Requires Python 3.9+, Git, Perl, make, tar, unzip, ripgrep, curl, bash-completion, and CA certificates. Missing prerequisites are installed automatically through apt/sudo on Debian and Ubuntu (sudo may request your password). Other Linux distributions need these prerequisites installed first. Git is needed to clone. Neovim's official binary also needs a compatible glibc; Ubuntu 24.04 is suitable.
 
 Missing tools are downloaded from official stable releases into `~/.local/opt/dotfiles` and linked from `~/.local/bin`. Stow is built from its official source release. Existing installed tools are retained by `install.sh`. GitHub asset SHA-256 digests are verified when provided; downloads use HTTPS. Internet access is needed for downloads and plugin restoration.
 
 Conflicting config files, directories, and symlinks are backed up under `~/.local/share/dotfiles-backups/<timestamp>/`. Unrelated config files stay in place. A config parent directory linking outside this repository must be relocated before setup. Repeating setup is safe. Bash and an existing Zsh configuration gain `~/.local/bin` on PATH, with backups before editing.
 
-Neovim plugins are restored using the tracked `lazy-lock.json`. Codex's config is included, but its application is installed separately. Credentials, sessions, databases, caches, and editor data are excluded. Optional preview tools, clipboard providers, fonts, language servers, and terminal colors are configured separately.
+Neovim plugins are restored using the tracked `lazy-lock.json`. Codex is installed from its official GitHub release using the same download and checksum handling as the other release tools. Claude Code uses its official native installer with the stable channel and manages its own files under `~/.local/share/claude` and launcher in `~/.local/bin`. Neither requires Node.js. Existing commands on PATH are skipped during installation; `update.sh` refreshes both. Claude Code also supports automatic updates through its native installer. Run `codex` and `claude` after setup to sign in; authentication remains local to each machine. Credentials, sessions, databases, caches, and editor data are excluded. Optional preview tools, clipboard providers, fonts, language servers, and terminal colors are configured separately.
 
 ## Update
 

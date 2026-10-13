@@ -1,3 +1,8 @@
+local capabilities = require("blink.cmp").get_lsp_capabilities()
+-- Request plain-text completions only, including from lean.nvim's server.
+capabilities.textDocument.completion.completionItem.snippetSupport = false
+vim.lsp.config("*", { capabilities = capabilities })
+
 vim.diagnostic.config({
   severity_sort = true,
   virtual_text = false,

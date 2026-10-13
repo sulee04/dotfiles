@@ -107,7 +107,29 @@ The setup installed BasedPyright 1.40.2 (with its bundled Node runtime) and
 Rust stable 1.99.0 with rust-analyzer and rust-src. uv and server launchers are
 available in `~/.local/bin`; Rust itself is managed under `~/.cargo` and
 `~/.rustup`. Existing OCaml and elan installations are reused. No automatic
-formatting or completion popup is enabled in this step.
+formatting on save is enabled.
+
+## Completion
+
+blink.cmp v1.10.2 shows suggestions from attached language servers only.
+Snippet suggestions are filtered out and snippet support is disabled in LSP
+capabilities. No snippet packs, path source, or buffer-word source are enabled.
+The Lua matcher needs no downloaded binary. Suggestions appear while typing;
+selection does not insert text until explicitly accepted.
+
+| Shortcut (Insert mode) | Action |
+| --- | --- |
+| Ctrl-n / Down | Select next suggestion |
+| Ctrl-p / Up | Select previous suggestion |
+| Ctrl-y | Accept selected suggestion (or first if none selected) |
+| Ctrl-e | Dismiss suggestions |
+| Ctrl-Space | Show suggestions; toggle documentation when open |
+
+Enter and Tab retain their usual behavior. These Insert-mode keys do not appear
+in which-key's Space menu. Ctrl-Space may be intercepted by macOS or Zellij;
+automatic suggestions and the other keys still work. Web files need an attached
+language server before LSP suggestions are available.
+
 
 | Shortcut | Action |
 | --- | --- |

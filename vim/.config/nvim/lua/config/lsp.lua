@@ -22,6 +22,11 @@ vim.diagnostic.config({
 vim.api.nvim_create_autocmd("LspAttach", {
   group = vim.api.nvim_create_augroup("LanguageServerShortcuts", { clear = true }),
   callback = function(event)
+    local client = vim.lsp.get_client_by_id(event.data.client_id)
+    if client and client.name == "ruff" then
+      -- BasedPyright remains responsible for type information and hover.
+      client.server_capabilities.hoverProvider = false
+    end
     local function map(lhs, rhs, desc)
       vim.keymap.set("n", lhs, rhs, { buffer = event.buf, desc = desc })
     end
@@ -54,5 +59,8 @@ vim.lsp.config("ocamllsp", {
 vim.lsp.config("basedpyright", {
   settings = { basedpyright = { analysis = { typeCheckingMode = "standard" } } },
 })
-vim.lsp.enable({ "ocamllsp", "basedpyright", "rust_analyzer" })
+vim.lsp.config("ruff", {
+  init_options = { settings = { lint = { enable = false } } },
+})
+vim.lsp.enable({ "ocamllsp", "basedpyright", "ruff", "rust_analyzer" })
 -- lean.nvim supplies and enables its own leanls configuration.

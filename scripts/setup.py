@@ -182,6 +182,7 @@ class Setup:
         if self.args.dry_run:
             print(f'Repository: {REPO}\nTarget: {self.home}\nArchitecture: {arch}')
             print('Would install stable Neovim, Yazi + ya, Zellij, Lazygit, GitHub CLI (gh), Codex, Claude Code, GNU Stow (unless --configs-only).')
+            print('Would install Ruff for Python formatting (unless --configs-only).')
             print('Would back up config conflicts, Stow: ' + ', '.join(PACKAGES))
             print('Would enable gh completion in Bash and existing Zsh startup files.')
             print('Would enable nvim-server and yazi-nvim shell aliases.')
@@ -204,6 +205,8 @@ class Setup:
             if self.args.update or not shutil.which('gh'):
                 gharch = 'amd64' if arch == 'x86_64' else 'arm64'
                 self.release('gh', 'cli/cli', f'gh_{{version}}_linux_{gharch}.tar.gz', {'gh': 'bin/gh'})
+            if self.args.update or not shutil.which('ruff'):
+                self.release('ruff', 'astral-sh/ruff', f'ruff-{arch}-unknown-linux-musl.tar.gz', {'ruff': 'ruff'})
             if self.args.update or not shutil.which('codex'):
                 target = f'codex-{arch}-unknown-linux-musl'
                 self.release('codex', 'openai/codex', f'{target}.tar.gz', {'codex': target})

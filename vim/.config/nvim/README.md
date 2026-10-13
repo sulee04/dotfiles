@@ -91,7 +91,7 @@ and CSS currently have syntax highlighting only.
 | --- | --- |
 | Lean | lean.nvim uses the project's elan toolchain and Lake environment |
 | OCaml | `opam exec -- ocamllsp` runs from the project root, selecting its switch |
-| Python | BasedPyright, installed with `uv tool install basedpyright` |
+| Python | BasedPyright for types; Ruff for formatting (installed by dotfiles) |
 | Rust | rust-analyzer, installed through rustup with rust-src |
 
 Python's server runs in its own isolated tool environment. Open Neovim from
@@ -130,6 +130,10 @@ in which-key's Space menu. Ctrl-Space may be intercepted by macOS or Zellij;
 automatic suggestions and the other keys still work. Web files need an attached
 language server before LSP suggestions are available.
 
+Python formatting uses Ruff's native language server via `Space c f`.
+Ruff linting is disabled; BasedPyright continues providing type diagnostics
+and hover. Formatting respects the project's Ruff configuration and does not
+run on save. Dotfiles setup installs Ruff when missing; updates refresh it.
 
 | Shortcut | Action |
 | --- | --- |

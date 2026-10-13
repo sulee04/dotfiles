@@ -16,6 +16,9 @@ Requires Python 3.9+, Git, Perl, make, tar, unzip, ripgrep, curl, bash-completio
 
 Missing tools are downloaded from official stable releases into `~/.local/opt/dotfiles` and linked from `~/.local/bin`. Stow is built from its official source release. Existing installed tools are retained by `install.sh`. GitHub asset SHA-256 digests are verified when provided; downloads use HTTPS. Internet access is needed for downloads and plugin restoration.
 
+Ruff is installed and updated through the same release workflow for Python
+formatting in Neovim (`Space c f`). Formatting is manual; Ruff linting is disabled.
+
 Conflicting config files, directories, and symlinks are backed up under `~/.local/share/dotfiles-backups/<timestamp>/`. Unrelated config files stay in place. A config parent directory linking outside this repository must be relocated before setup. Repeating setup is safe. Bash and an existing Zsh configuration gain `~/.local/bin` on PATH, with backups before editing.
 
 Neovim plugins are restored using the tracked `lazy-lock.json`. Codex is installed from its official GitHub release using the same download and checksum handling as the other release tools. Claude Code uses its official native installer with the stable channel and manages its own files under `~/.local/share/claude` and launcher in `~/.local/bin`. Neither requires Node.js. Existing commands on PATH are skipped during installation; `update.sh` refreshes both. Claude Code also supports automatic updates through its native installer. Run `codex` and `claude` after setup to sign in; authentication remains local to each machine. Credentials, sessions, databases, caches, and editor data are excluded. Optional preview tools, clipboard providers, fonts, language servers, and terminal colors are configured separately.

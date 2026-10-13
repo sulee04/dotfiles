@@ -37,8 +37,8 @@ normal conflict handling. This reloads file contents, not Lua configuration.
 Focus detection depends on the terminal and Zellij delivering focus events;
 `:checktime` performs the same check manually.
 
-System clipboard sharing is enabled only when Neovim detects a provider.
-No provider was available in the setup environment.
+OSC 52 sends yanked text through SSH to the local terminal clipboard.
+Enable clipboard access in iTerm2. Paste from the Mac with Cmd-V in Insert mode.
 
 ## Colors
 

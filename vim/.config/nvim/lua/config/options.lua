@@ -33,7 +33,8 @@ vim.api.nvim_create_autocmd({ "FocusGained", "BufEnter" }, {
   end,
 })
 
--- Keep ordinary registers usable when no system clipboard is available.
+-- Copy through the terminal to the local clipboard, including over SSH.
+vim.g.clipboard = "osc52"
 if vim.fn.has("clipboard") == 1 then
   opt.clipboard = "unnamedplus"
 end

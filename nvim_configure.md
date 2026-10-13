@@ -36,7 +36,7 @@ Build a personal Lua configuration using lazy.nvim. Work through one item at a t
 
 Items 1–8 and 13 completed. Configuration lives in `~/dotfiles/vim/.config/nvim`, linked from `~/.config/nvim`. Space is the leader; backslash is the local leader. Essential editor settings and external-file reload checks enabled; Zellij handles panes. No clipboard provider detected, so system clipboard sharing remains conditional. Nord enabled with true colors and a transparent main background. Telescope configured for files, project text, buffers, and help. Standalone Yazi reuses the parent editor in new tabs, using a headless remote client. which-key shows shortcut hints. Tree-sitter highlighting enabled for OCaml, Python, Rust, and web files; lean.nvim supplies Lean syntax and semantic highlighting. Language servers enabled for Lean, OCaml, Python, and Rust. Git actions under Space g are global; LSP actions attach per buffer.
 
-Git integration (item 13) was completed ahead of completion by request. Item 9 is now complete with LSP suggestions only; snippets remain excluded by preference. Remaining unchecked features are available to revisit as needed. This checklist is version-controlled in the dotfiles repository.
+Git integration (item 13) was completed ahead of completion by request. Item 9 is now complete with LSP suggestions only; snippets remain excluded by preference. Clipboard sharing through OSC 52 works over SSH with iTerm2. Remaining unchecked features are available to revisit as needed. This checklist is version-controlled in the dotfiles repository.
 
 ## References
 

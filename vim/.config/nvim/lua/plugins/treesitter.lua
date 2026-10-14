@@ -7,11 +7,13 @@ return {
     config = function()
       local ts = require("nvim-treesitter")
       ts.setup({})
-      -- Missing parsers install asynchronously; use :TSInstall to retry.
-      ts.install({
-        "ocaml", "ocaml_interface", "python", "rust",
-        "javascript", "html", "css",
-      })
+      -- The headless installer waits for these parsers after restoring plugins.
+      if #vim.api.nvim_list_uis() > 0 then
+        ts.install({
+          "ocaml", "ocaml_interface", "python", "rust",
+          "javascript", "html", "css",
+        })
+      end
       vim.api.nvim_create_autocmd("FileType", {
         group = vim.api.nvim_create_augroup("LanguageSyntaxHighlighting", { clear = true }),
         pattern = { "ocaml", "ocamlinterface", "python", "rust", "javascript", "javascriptreact", "html", "css" },

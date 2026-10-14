@@ -101,7 +101,7 @@ class AgentInstallTests(unittest.TestCase):
                     args = SimpleNamespace(update=update, configs_only=configs_only,
                                            dry_run=dry_run, skip_plugins=True)
                     def which(command):
-                        return None if missing and command in ('codex', 'claude') else f'/usr/bin/{command}'
+                        return None if missing and command in ('codex', 'claude', 'tree-sitter') else f'/usr/bin/{command}'
                     with patch.object(Path, 'home', return_value=Path(temp)), \
                             patch.object(setup.platform, 'system', return_value='Linux'), \
                             patch.object(setup.platform, 'machine', return_value=arch), \
@@ -114,12 +114,20 @@ class AgentInstallTests(unittest.TestCase):
                             patch.object(setup, 'fetch') as fetch:
                         setup.Setup(args).main()
                         codex_calls = [call for call in release.call_args_list if call.args[0] == 'codex']
+                        tree_sitter_calls = [call for call in release.call_args_list
+                                             if call.args[0] == 'tree-sitter']
                         self.assertEqual(len(codex_calls), int(install))
+                        self.assertEqual(len(tree_sitter_calls), int(install))
                         self.assertEqual(claude.call_count, int(install))
                         if install:
                             target = f'codex-{arch}-unknown-linux-musl'
                             self.assertEqual(codex_calls[0].args,
                                              ('codex', 'openai/codex', f'{target}.tar.gz', {'codex': target}))
+                            tsarch = 'arm64' if arch == 'aarch64' else 'x64'
+                            self.assertEqual(tree_sitter_calls[0].args,
+                                             ('tree-sitter', 'tree-sitter/tree-sitter',
+                                              f'tree-sitter-cli-linux-{tsarch}.zip',
+                                              {'tree-sitter': 'tree-sitter'}))
                         fetch.assert_not_called()
                         if dry_run:
                             self.assertEqual(list(Path(temp).iterdir()), [])

@@ -181,7 +181,7 @@ class Setup:
             raise RuntimeError(f'Unsupported architecture: {platform.machine()}')
         if self.args.dry_run:
             print(f'Repository: {REPO}\nTarget: {self.home}\nArchitecture: {arch}')
-            print('Would install stable Neovim, Yazi + ya, Zellij, Lazygit, GitHub CLI (gh), Codex, Claude Code, GNU Stow (unless --configs-only).')
+            print('Would install stable Neovim, Yazi + ya, Zellij, Lazygit, GitHub CLI (gh), Codex, Claude Code, Tree-sitter CLI, GNU Stow (unless --configs-only).')
             print('Would install Ruff for Python formatting (unless --configs-only).')
             print('Would back up config conflicts, Stow: ' + ', '.join(PACKAGES))
             print('Would enable gh completion in Bash and existing Zsh startup files.')
@@ -207,6 +207,10 @@ class Setup:
                 self.release('gh', 'cli/cli', f'gh_{{version}}_linux_{gharch}.tar.gz', {'gh': 'bin/gh'})
             if self.args.update or not shutil.which('ruff'):
                 self.release('ruff', 'astral-sh/ruff', f'ruff-{arch}-unknown-linux-musl.tar.gz', {'ruff': 'ruff'})
+            if self.args.update or not shutil.which('tree-sitter'):
+                tsarch = 'arm64' if arch == 'aarch64' else 'x64'
+                self.release('tree-sitter', 'tree-sitter/tree-sitter',
+                             f'tree-sitter-cli-linux-{tsarch}.zip', {'tree-sitter': 'tree-sitter'})
             if self.args.update or not shutil.which('codex'):
                 target = f'codex-{arch}-unknown-linux-musl'
                 self.release('codex', 'openai/codex', f'{target}.tar.gz', {'codex': target})
@@ -247,6 +251,9 @@ class Setup:
                         stream.write(f'\n{marker}\n[ ! -r "$HOME/.config/shell/editor-aliases.sh" ] || . "$HOME/.config/shell/editor-aliases.sh"\n')
         if not self.args.skip_plugins:
             run('nvim', '--headless', '+Lazy! restore', '+qa')
+            run('nvim', '--headless',
+                "+lua require('nvim-treesitter').install({'ocaml', 'ocaml_interface', 'python', 'rust', 'javascript', 'html', 'css'}):wait(300000)",
+                '+qa')
         print('Setup complete. Open a new shell, or run: export PATH="$HOME/.local/bin:$PATH"')
         if self.backups.exists():
             print(f'Backups: {self.backups}')

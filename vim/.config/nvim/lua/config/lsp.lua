@@ -30,7 +30,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
     local function map(lhs, rhs, desc)
       vim.keymap.set("n", lhs, rhs, { buffer = event.buf, desc = desc })
     end
-    map("gd", function() require("telescope.builtin").lsp_definitions() end, "Go to definition")
+    map("gd", function() require("telescope.builtin").lsp_definitions({ jump_type = "tab" }) end, "Go to definition")
     map("K", function() vim.lsp.buf.hover({ border = "rounded" }) end, "Hover documentation")
     map("<leader>cr", vim.lsp.buf.rename, "Rename symbol")
     map("<leader>ca", vim.lsp.buf.code_action, "Code action")

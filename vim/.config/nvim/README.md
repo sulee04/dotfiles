@@ -73,10 +73,12 @@ are disabled because Zellij handles panes.
 ## Syntax highlighting
 
 Tree-sitter highlighting is enabled for OCaml (`.ml` and `.mli`), Python, Rust,
-JavaScript/JSX, HTML, and CSS. Parsers install automatically when missing.
+JavaScript/JSX, HTML, and CSS. The setup script installs the parsers; normal
+startup does not download or build them. To install missing parsers manually,
+run `:TSInstall ocaml ocaml_interface python rust javascript html css`.
 The Tree-sitter CLI lives in `~/.local/bin/tree-sitter`; parser builds also need
-a C compiler, curl, and tar. Run `:TSUpdate` after plugin updates. If opening a
-file during the initial install, reopen it after installation completes.
+a C compiler, curl, and tar. Run `:TSUpdate` after plugin updates. Reopen any
+files opened before a parser installation completes.
 
 Lean's experimental Tree-sitter parser is not enabled. lean.nvim provides
 Lean syntax highlighting and language-server semantic tokens.

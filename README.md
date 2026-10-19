@@ -1,6 +1,6 @@
 # Personal dotfiles
 
-Linux x86-64 and ARM64 setup for Neovim, Yazi (`yazi` and `ya`), Zellij, Lazygit, GitHub CLI (`gh`), Codex (`codex`), Claude Code (`claude`), and GNU Stow. Stow manages your Neovim, Yazi, Zellij, and Codex settings.
+Linux x86-64 and ARM64 setup for Neovim, Yazi (`yazi` and `ya`), Zellij, Lazygit, GitHub CLI (`gh`), ripgrep (`rg`), Codex (`codex`), Claude Code (`claude`), and GNU Stow. Stow manages your Neovim, Yazi, Zellij, and Codex settings.
 
 ## Set up a machine
 
@@ -12,7 +12,7 @@ cd ~/dotfiles
 
 Open a new shell afterward. The script works from any directory; you can clone somewhere other than `~/dotfiles`.
 
-Requires Python 3.9+, Git, Perl, make, tar, unzip, ripgrep, curl, bash-completion, and CA certificates. Missing prerequisites are installed automatically through apt/sudo on Debian and Ubuntu (sudo may request your password). Other Linux distributions need these prerequisites installed first. Git is needed to clone. Neovim's official binary also needs a compatible glibc; Ubuntu 24.04 is suitable.
+Requires Python 3.9+, Git, Perl, make, tar, unzip, curl, bash-completion, and CA certificates. Missing prerequisites are installed automatically through apt/sudo on Debian and Ubuntu (sudo may request your password). Other Linux distributions need these prerequisites installed first. Git is needed to clone. Neovim's official binary also needs a compatible glibc; Ubuntu 24.04 is suitable.
 
 Missing tools are downloaded from official stable releases into `~/.local/opt/dotfiles` and linked from `~/.local/bin`. Stow is built from its official source release. Existing installed tools are retained by `install.sh`. GitHub asset SHA-256 digests are verified when provided; downloads use HTTPS. Internet access is needed for downloads and plugin restoration.
 

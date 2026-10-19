@@ -116,8 +116,11 @@ class AgentInstallTests(unittest.TestCase):
                         codex_calls = [call for call in release.call_args_list if call.args[0] == 'codex']
                         tree_sitter_calls = [call for call in release.call_args_list
                                              if call.args[0] == 'tree-sitter']
+                        ripgrep_calls = [call for call in release.call_args_list
+                                         if call.args[0] == 'ripgrep']
                         self.assertEqual(len(codex_calls), int(install))
                         self.assertEqual(len(tree_sitter_calls), int(install))
+                        self.assertEqual(len(ripgrep_calls), int(not configs_only and not dry_run))
                         self.assertEqual(claude.call_count, int(install))
                         if install:
                             target = f'codex-{arch}-unknown-linux-musl'
@@ -128,6 +131,11 @@ class AgentInstallTests(unittest.TestCase):
                                              ('tree-sitter', 'tree-sitter/tree-sitter',
                                               f'tree-sitter-cli-linux-{tsarch}.zip',
                                               {'tree-sitter': 'tree-sitter'}))
+                        if ripgrep_calls:
+                            self.assertEqual(ripgrep_calls[0].args,
+                                             ('ripgrep', 'BurntSushi/ripgrep',
+                                              f'ripgrep-{{version}}-{arch}-unknown-linux-musl.tar.gz',
+                                              {'rg': 'rg'}))
                         fetch.assert_not_called()
                         if dry_run:
                             self.assertEqual(list(Path(temp).iterdir()), [])
